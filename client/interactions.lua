@@ -28,7 +28,7 @@ end
 
 local function HandCuffAnimation()
     local ped = PlayerPedId()
-    if isHandcuffed == true then
+    if isHandcuffed then
         TriggerServerEvent("InteractSound_SV:PlayOnSource", "Cuff", 0.2)
     else
         TriggerServerEvent("InteractSound_SV:PlayOnSource", "Uncuff", 0.2)
@@ -69,18 +69,17 @@ RegisterNetEvent('police:client:PutInVehicle', function()
     local ped = PlayerPedId()
     if isHandcuffed or isEscorted then
         local vehicle = QBCore.Functions.GetClosestVehicle()
-        if DoesEntityExist(vehicle) then
-            for i = GetVehicleMaxNumberOfPassengers(vehicle), 0, -1 do
-                if IsVehicleSeatFree(vehicle, i) then
-                    isEscorted = false
-                    TriggerEvent('hospital:client:isEscorted', isEscorted)
-                    ClearPedTasks(ped)
-                    DetachEntity(ped, true, false)
+        if not DoesEntityExist(vehicle) then return end
+        for i = GetVehicleMaxNumberOfPassengers(vehicle), 0, -1 do
+            if IsVehicleSeatFree(vehicle, i) then
+                isEscorted = false
+                TriggerEvent('hospital:client:isEscorted', isEscorted)
+                ClearPedTasks(ped)
+                DetachEntity(ped, true, false)
 
-                    Wait(100)
-                    SetPedIntoVehicle(ped, vehicle, i)
-                    return
-                end
+                Wait(100)
+                SetPedIntoVehicle(ped, vehicle, i)
+                return
             end
         end
     end

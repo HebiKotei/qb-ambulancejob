@@ -151,7 +151,7 @@ QBCore.Commands.Add("pobject", Lang:t("commands.place_object"), {{name = "type",
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local type = args[1]:lower()
-    if not (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+    if not (Player.PlayerData.job.name == "police" or Player.PlayerData.job.onduty) then
         TriggerClientEvent('ox_lib:notify', src, {description = Lang:t("error.on_duty_police_only"), type = 'error'})
         return
     end

@@ -233,11 +233,12 @@ function MenuImpound(currentSelection)
     QBCore.Functions.TriggerCallback("police:GetImpoundedVehicles", function(result)
         local shouldContinue = false
         if result == nil then
-            QBCore.Functions.Notify(Lang:t("error.no_impound"), "error", 5000)
-        else
-            shouldContinue = true
-            for _ , v in pairs(result) do
-                local enginePercent = QBCore.Shared.Round(v.engine / 10, 0)
+            lib.notify({description = Lang:t("error.no_impound"), type = "error"})
+            return
+        end
+        shouldContinue = true
+        for _ , v in pairs(result) do
+            local enginePercent = QBCore.Shared.Round(v.engine / 10, 0)
                 local currentFuel = v.fuel
                 local vname = QBCore.Shared.Vehicles[v.vehicle].name
 
